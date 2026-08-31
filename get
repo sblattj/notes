@@ -1,0 +1,9 @@
+#!/bin/sh
+# Fetch and decrypt the current payload. Prompts for the passphrase.
+main() {
+  if [ -n "${PASS:-}" ]; then parg="-pass env:PASS"; else parg=""; fi
+  curl -sL https://github.com/sblattj/notes/raw/main/p \
+    | openssl enc -d -aes-256-cbc -pbkdf2 -iter 600000 -a -out brief.md $parg \
+    && echo "wrote $(pwd)/brief.md"
+}
+main </dev/null
